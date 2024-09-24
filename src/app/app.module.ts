@@ -32,7 +32,7 @@ import { PolicyPageComponent } from '../pages/policy-page/policy-page.component'
 // import { WebSocketService } from '../services/web-socket.service';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 const config: SocketIoConfig = {
-  url: 'http://localhost:3000',
+  url: 'https://ray3-0-back.onrender.com/api/',
   options: {
     reconnection: true,
     reconnectionAttempts: 5,
