@@ -32,7 +32,7 @@ import { PolicyPageComponent } from '../pages/policy-page/policy-page.component'
 // import { WebSocketService } from '../services/web-socket.service';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 const config: SocketIoConfig = {
-  url: 'https://ray3back.vercel.app/',
+  url: 'https://ray3back.vercel.app/api/',
   options: {
     reconnection: true,
     reconnectionAttempts: 5,
