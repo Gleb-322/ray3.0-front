@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  baseUrl: 'domain/api/',
+  baseUrl: 'https://ray3-0-back.onrender.com/api/',
 };
