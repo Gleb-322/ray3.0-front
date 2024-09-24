@@ -1,0 +1,73 @@
+<div
+  class="text-stone-50 drop-shadow-md rounded-lg min-[320px]:w-full min-[320px]:h-full min-[320px]:p-[2px]"
+>
+  <div
+    class="min-[320px]:text-lg min-[360px]:text-xl sm:text-2xl tracking-wide pl-[14px] relative z-10 before:block before:absolute before:w-[48px] before:h-[48px] before:bg-[#339fb3] before:rounded-full before:top-[-8px] before:left-0 before:-z-10"
+  >
+    <div class="sm:flex">
+      <div>Меня зовут</div>
+      <div class="min-[320px]:mt-[10px] sm:mt-[0px] sm:ml-[5px]">
+        Райчева Эвелина Николаевна
+      </div>
+    </div>
+  </div>
+
+  <div class="min-[320px]:mt-[10px] md:mt-[23px]">
+    <mat-divider class="bg-[#339fb3] w-[70px] h-[3px]"></mat-divider>
+  </div>
+
+  <div
+    class="min-[320px]:text-lg min-[360px]:text-xl sm:text-2xl tracking-wide font-base min-[320px]:mt-[10px] sm:mt-[13px]"
+  >
+    Я специалист в области <strong>гинекологии</strong>, здесь Вы можете
+    записаться ко мне на прием.
+  </div>
+
+  <div
+    class="min-[320px]:mt-[10px] shadow-lg md:mt-[25px] border-solid text-stone-50 min-[320px]:border-[1px] min-[360px]:border-[2px] border-opacity-30 drop-shadow-md rounded-lg min-[320px]:p-[1px] min-[360px]:p-[3px] sm:p-[8px]"
+  >
+    <div
+      class="min-[320px]:text-base min-[360px]:text-lg sm:text-xl tracking-wide"
+    >
+      Принимаю по будням с <strong>9:00</strong> до <strong>17:00</strong>.
+    </div>
+
+    <div
+      class="min-[320px]:text-lg min-[360px]:text-xl tracking-wide flex min-[320px]:mt-[10px] md:mt-[25px]"
+    >
+      <div class="sm:flex">
+        <div class="flex">
+          Мой контактный телефон
+          <div class="flex">
+            <div class="min-[320px]:ml-[5px] sm:ml-[10px]">
+              <mat-icon svgIcon="viber"></mat-icon>
+            </div>
+            <div class="min-[320px]:ml-[5px] sm:ml-[10px] mr-[2px]">
+              <mat-icon svgIcon="whatsapp"></mat-icon>
+            </div>
+          </div>
+          :
+        </div>
+        <strong><span class="sm:ml-[5px]">+373 (777) 24-634</span></strong>
+      </div>
+    </div>
+
+    <div
+      class="min-[320px]:text-lg min-[360px]:text-xl tracking-wide min-[320px]:mt-[10px] md:mt-[25px]"
+    >
+      Мое местонахождение: <strong>г.Бендеры, ул. Протягайловская д. 4</strong>
+    </div>
+  </div>
+
+  <div
+    class="flex min-[320px]:flex-col sm:flex-row min-[320px]:space-y-1 sm:space-y-0 min-[320px]:mt-[10px] md:mt-[25px]"
+  >
+    <button type="button" routerLink="/registration" mat-raised-button>
+      <mat-icon>person_add</mat-icon> {{ buttonAppointment | uppercase }}
+    </button>
+
+    <button type="button" mat-raised-button class="sm:ml-4" routerLink="/check">
+      <mat-icon> person_search </mat-icon> {{ buttonCheck | uppercase }}
+    </button>
+  </div>
+</div>

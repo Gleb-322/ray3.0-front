@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>{{ dialogData.title }}</h2>
+<mat-dialog-content> {{ dialogData.body }} </mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close (click)="_dialogRef.close(false)">
+    Нет
+  </button>
+  <button
+    mat-button
+    mat-dialog-close
+    cdkFocusInitial
+    (click)="_dialogRef.close(true)"
+  >
+    Да
+  </button>
+</mat-dialog-actions>

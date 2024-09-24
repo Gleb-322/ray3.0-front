@@ -1,0 +1,105 @@
+<section
+  class="bg-gradient-to-r from-[#29323c] to-[#485563] w-screen h-screen flex justify-center min-[320px]:items-start min-[360px]:items-center"
+>
+  <div
+    class="bg-gradient-to-r from-[#29323c] to-[#485563] min-[320px]:w-[320px] min-[360px]:w-[360px] min-[425px]:w-[425px] sm:w-[500px] min-[320px]:p-[5px] md:p-[15px] rounded-sm"
+  >
+    <header
+      class="font-semibold text-center text-slate-50 min-[320px]:text-base min-[360px]:text-lg min-[425px]:text-xl"
+    >
+      Заполните данные формы
+    </header>
+
+    <div class="mt-[10px]">
+      <form
+        [formGroup]="checkForm"
+        (ngSubmit)="onFormSubmit()"
+        class="flex flex-col space-y-4 w-full"
+      >
+        <mat-divider class="bg-slate-50"></mat-divider>
+
+        <mat-form-field>
+          <mat-label>Телефон</mat-label>
+          <span></span>
+          <input
+            matInput
+            type="text"
+            name="phone"
+            autocomplete="off"
+            formControlName="phone"
+            [showMaskTyped]="true"
+            mask="(000)-00-000"
+            prefix="+373"
+            [dropSpecialCharacters]="false"
+            [errorStateMatcher]="matcher"
+          />
+          <mat-icon matSuffix class="text-gray-500">call</mat-icon>
+          <mat-error *ngIf="checkForm.get('phone')?.hasError('required')">
+            Пожалуйста введите телефон!
+          </mat-error>
+          <mat-error *ngIf="checkForm.get('phone')?.hasError('minlength')">
+            Введите телефон полностью!
+          </mat-error>
+        </mat-form-field>
+
+        <button type="submit" mat-raised-button [disabled]="!checkForm.valid">
+          <mat-icon class="text-gray-500">person_search</mat-icon>
+          {{ "проверить запись" | uppercase }}
+        </button>
+
+        <button
+          type="button"
+          routerLink="/preview"
+          color="primary"
+          mat-raised-button
+        >
+          <mat-icon class="text-stone-50">keyboard_backspace</mat-icon>
+          {{ "назад" | uppercase }}
+        </button>
+      </form>
+
+      <div
+        *ngIf="patientExist && showContent && !isAdminPhone"
+        class="text-slate-50 mt-[10px]"
+      >
+        <div>
+          Здравствуйте
+          <span class="uppercase font-bold">{{ patient?.name }}</span
+          >,
+        </div>
+        <div>
+          Вы оформили запись на:
+          <span class="uppercase italic font-bold underline">{{
+            patient?.date
+          }}</span
+          >, <br />
+          время:
+          <span class="uppercase italic font-bold underline">{{
+            patient?.time
+          }}</span
+          >.
+        </div>
+      </div>
+
+      <div
+        *ngIf="!patientExist && showContent && !isAdminPhone"
+        class="text-slate-50 mt-[10px]"
+      >
+        Запись с телефоном
+        <span class="uppercase italic font-bold underline">{{
+          phoneNumber
+        }}</span>
+        отсутствует!
+      </div>
+
+      <div
+        *ngIf="!patientExist && showContent && isAdminPhone"
+        class="text-slate-50 mt-[10px]"
+      >
+        <span class="uppercase italic font-bold underline"
+          >Это телефон администратора</span
+        >
+      </div>
+    </div>
+  </div>
+</section>

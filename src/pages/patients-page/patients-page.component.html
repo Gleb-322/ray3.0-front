@@ -1,0 +1,232 @@
+<div class="w-full min-h-[92vh] flex flex-col justify-between relative z-[1]">
+  <div>
+    <div class="sticky top-0 z-[5]">
+      <mat-expansion-panel
+        (opened)="panelOpenState = true"
+        (closed)="panelOpenState = false"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>Фильтр пациентов</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="flex min-[320px]:flex-col md:flex-row w-full pt-[10px]">
+          <div>
+            <div class="md:w-[320px]">
+              <div>Поиск по пациентам</div>
+              <mat-form-field appearance="fill" class="w-full">
+                <mat-label>поиск пациентов</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  name="filterInput"
+                  autocomplete="off"
+                  placeholder="введите что-нибудь..."
+                  #filterInput
+                  (keyup)="onChangeFilter($event)"
+                />
+                <mat-icon matSuffix class="text-gray-500">search</mat-icon>
+              </mat-form-field>
+            </div>
+
+            <div class="md:w-[320px]">
+              <div>Поиск по времени</div>
+              <mat-form-field appearance="fill" class="w-full">
+                <mat-label>выберите время</mat-label>
+                <mat-select
+                  name="timeFilter"
+                  #timeFilter
+                  panelClass="grid grid-cols-4 grid-rows-4 justify-items-center"
+                  [(ngModel)]="selectedValue"
+                  (selectionChange)="onChangeSelect(selectedValue)"
+                >
+                  <mat-option>отмена</mat-option>
+                  <mat-option [value]="time" *ngFor="let time of timeArr">{{
+                    time
+                  }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="md:w-[320px]">
+              <div>Поиск по дате</div>
+              <mat-form-field appearance="fill" class="w-full">
+                <mat-label>выберите дату</mat-label>
+                <input
+                  matInput
+                  #dateFilter
+                  [min]="minDate"
+                  [matDatepicker]="picker"
+                  autocomplete="off"
+                  name="dateFilter"
+                  (dateChange)="onChangeDate($event)"
+                  [matDatepickerFilter]="sundayAndDisabledDatesFilter"
+                />
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="min-[320px]:ml-0 md:ml-[50px] min-[1115px]:ml-[100px]">
+            <div
+              class="flex min-[320px]:flex-col min-[1065px]:flex-row-reverse min-[1065px]:items-center"
+            >
+              <button
+                type="button"
+                class="md:w-[320px] min-[320px]:ml-0 min-[320px]:mt-[5px] min-[320px]:mb-[8px] min-[1065px]:ml-[25px] md:mt-[31px] md:mb-[31px] min-[1065px]:mt-0 min-[1065px]:mb-0"
+                mat-stroked-button
+                (click)="openDatePicker(dateRangePicker)"
+                [color]="unlockButtonStatus ? 'warn' : ''"
+              >
+                <mat-icon
+                  [ngClass]="
+                    unlockButtonStatus ? 'text-[#f44336]' : 'text-gray-500'
+                  "
+                  >check</mat-icon
+                >
+                {{
+                  unlockButtonStatus
+                    ? "Блокировать даты"
+                    : "Разблокировать даты"
+                }}
+              </button>
+
+              <div class="md:w-[320px]">
+                <div>
+                  {{
+                    unlockButtonStatus ? "Разблокировка дат" : "Блокировка дат"
+                  }}
+                </div>
+                <mat-form-field appearance="fill" class="w-full">
+                  <mat-label>интервал дат</mat-label>
+                  <mat-date-range-input
+                    [dateFilter]="sundayAndDisabledUndisabledDatesFilter"
+                    [rangePicker]="dateRangePicker"
+                    [min]="minDate"
+                  >
+                    <input
+                      matStartDate
+                      placeholder="начало"
+                      [(ngModel)]="start"
+                      name="start"
+                      type="text"
+                      (click)="dateRangePicker.open()"
+                      (dateChange)="startCahnge($event)"
+                    />
+                    <input
+                      matEndDate
+                      placeholder="конец"
+                      name="end"
+                      [(ngModel)]="end"
+                      type="text"
+                      (click)="dateRangePicker.open()"
+                      (dateChange)="endCahnge($event)"
+                    />
+                  </mat-date-range-input>
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="dateRangePicker"
+                  ></mat-datepicker-toggle>
+                  <mat-date-range-picker
+                    #dateRangePicker
+                  ></mat-date-range-picker>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </div>
+
+    <div class="w-full px-[2px] mt-[15px] overflow-auto">
+      <table mat-table [dataSource]="patients">
+        <ng-container matColumnDef="created">
+          <th mat-header-cell *matHeaderCellDef>Когда создана</th>
+          <td mat-cell *matCellDef="let patient">
+            {{ patient.createdAt.split("T")[0].split("-").reverse().join("-") }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Имя и Фамилия</th>
+          <td mat-cell *matCellDef="let patient">{{ patient.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef>Телефон</th>
+          <td mat-cell *matCellDef="let patient">{{ patient.phone }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>Почта</th>
+          <td mat-cell *matCellDef="let patient">
+            {{ patient.email ? patient.email : "Почту не указал" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>Дата записи</th>
+          <td mat-cell *matCellDef="let patient">{{ patient.date }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="time">
+          <th mat-header-cell *matHeaderCellDef>Время записи</th>
+          <td mat-cell *matCellDef="let patient">{{ patient.time }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>
+            <button
+              type="button"
+              [ngClass]="'scale-[0.7]'"
+              mat-fab
+              (click)="openAddForm()"
+              color="primary"
+            >
+              <mat-icon>person_add</mat-icon>
+            </button>
+          </th>
+          <td mat-cell *matCellDef="let patient">
+            <button
+              type="button"
+              mat-icon-button
+              color="primary"
+              (click)="openEditForm(patient)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              type="button"
+              mat-icon-button
+              color="warn"
+              (click)="deletePatient(patient._id)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let patient; columns: displayedColumns"></tr>
+
+        <tr *matNoDataRow>
+          <td colspan="6">
+            @if(filterInput.value || timeFilter.value || dateFilter.value) { По
+            запросу "{{
+              filterInput.value || timeFilter.value || dateFilter.value
+            }}" ничего не найдено... } @else { Ещё никто не записался... }
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div>
+    <mat-paginator
+      [length]="patientsLength"
+      (page)="handlePageEvent($event)"
+      showFirstLastButtons
+      [pageSize]="10"
+    ></mat-paginator>
+  </div>
+</div>

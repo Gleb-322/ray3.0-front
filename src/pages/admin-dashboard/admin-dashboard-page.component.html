@@ -1,0 +1,53 @@
+<mat-toolbar class="relative z-[5]">
+  <button mat-icon-button (click)="openCloseDrawer()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>Админ панель</span>
+</mat-toolbar>
+
+<mat-sidenav-container class="h-[calc(100vh-64px)] bg-slate-50">
+  <mat-sidenav [mode]="responsiveMatDrawer()" [(opened)]="sideDrawlerOpen">
+    <div class="w-[200px] h-full pb-[40px] flex flex-col justify-between">
+      <mat-nav-list>
+        <a
+          mat-list-item
+          routerLink="/admin/patients"
+          #first="routerLinkActive"
+          routerLinkActive
+          [activated]="first.isActive"
+        >
+          <span matListItemTitle>Пациенты</span>
+          <mat-icon matListItemIcon>group</mat-icon>
+        </a>
+        <mat-divider></mat-divider>
+
+        <a
+          mat-list-item
+          routerLink="/admin/analytics"
+          #second="routerLinkActive"
+          routerLinkActive
+          [activated]="second.isActive"
+        >
+          <span matListItemTitle>Аналитика</span>
+          <mat-icon matListItemIcon>signal_cellular_alt</mat-icon>
+        </a>
+
+        <mat-divider></mat-divider>
+      </mat-nav-list>
+
+      <button
+        (click)="logoutAdmin()"
+        mat-button
+        color="primary"
+        class="rounded-none"
+      >
+        <mat-icon>logout</mat-icon>
+        {{ "выйти" | uppercase }}
+      </button>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

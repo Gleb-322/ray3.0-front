@@ -1,0 +1,71 @@
+<div
+  class="bg-amber-100 w-screen h-screen flex justify-center min-[320px]:items-start min-[320px]:pt-[5px] min-[360px]:p-0 min-[360px]:items-center"
+>
+  <mat-card
+    class="w-[450px] min-[320px]:p-[1px] min-[360px]:p-[5px] sm:p-[10px] flex flex-col items-center"
+  >
+    <mat-card-header>
+      <div class="font-semibold text-lg">Админ панель</div>
+    </mat-card-header>
+    <mat-card-content class="w-full h-full min-[320px]:p-[1px] sm:p-[10px]">
+      <form
+        class="w-full flex flex-col mt-[5px]"
+        [formGroup]="adminForm"
+        (ngSubmit)="onFormSubmit()"
+      >
+        <mat-form-field class="mt-[5px]" appearance="outline">
+          <mat-label>Логин</mat-label>
+          <input
+            type="text"
+            matInput
+            placeholder="Введите логин"
+            name="login"
+            formControlName="login"
+          />
+          <mat-icon matSuffix>login</mat-icon>
+          <mat-error *ngIf="adminForm.get('login')?.hasError('required')">
+            Пожалуйста введите логин!
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="mt-[5px]" appearance="outline">
+          <mat-label>Пароль</mat-label>
+          <input
+            matInput
+            [type]="hide ? 'password' : 'text'"
+            placeholder="Введите пароль"
+            name="password"
+            formControlName="password"
+          />
+          <button
+            type="button"
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide"
+          >
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+          <mat-error *ngIf="adminForm.get('password')?.hasError('required')">
+            Пожалуйста введите пароль!
+          </mat-error>
+        </mat-form-field>
+
+        <div *ngIf="errorMessageStatus" class="text-[13px] text-[#f44336]">
+          {{ errorMessage }}
+        </div>
+
+        <button
+          type="submit"
+          class="mt-[5px]"
+          [disabled]="!adminForm.valid"
+          mat-stroked-button
+        >
+          <mat-icon>input</mat-icon>
+          {{ "войти" | uppercase }}
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

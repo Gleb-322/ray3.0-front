@@ -1,0 +1,153 @@
+<section
+  class="bg-main-bg bg-no-repeat bg-center bg-cover w-full min-h-screen flex justify-center p-[10px] overflow-auto"
+>
+  <form
+    class="flex flex-col shadow-lg space-y-4 min-[320px]:h-[720px] p-[1px] min-[320px]:w-full sm:w-[600px] sm:h-[750px] custom-laptop-media:w-full bg-slate-50 sm:p-4 rounded-sm"
+    [formGroup]="patientForm"
+    (ngSubmit)="onFormSubmit()"
+  >
+    <legend class="text-xl font-bold text-center mt-[4px]">
+      Заполните данные формы
+    </legend>
+
+    <mat-divider></mat-divider>
+    <mat-form-field>
+      <mat-label>Ваше имя и фамилия</mat-label>
+
+      <input
+        matInput
+        type="text"
+        placeholder="Имя и Фамилия"
+        formControlName="name"
+        name="name"
+        maxLength="30"
+        autocomplete="off"
+        [errorStateMatcher]="matcher"
+      />
+
+      <mat-icon matSuffix class="text-gray-500">badge</mat-icon>
+      <mat-error *ngIf="patientForm.get('name')?.hasError('required')">
+        Пожалуйста введите имя и фамилию!
+      </mat-error>
+      <mat-error *ngIf="patientForm.get('name')?.hasError('pattern')">
+        Имя и фамилия указываются только буквами!
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Ваш телефон</mat-label>
+
+      <input
+        matInput
+        type="text"
+        name="phone"
+        autocomplete="off"
+        formControlName="phone"
+        [showMaskTyped]="true"
+        mask="(000)-00-000"
+        prefix="+373"
+        [dropSpecialCharacters]="false"
+        [errorStateMatcher]="matcher"
+      />
+
+      <mat-icon matSuffix class="text-gray-500">call</mat-icon>
+
+      <mat-error *ngIf="patientForm.get('phone')?.hasError('required')">
+        Пожалуйста введите телефон!
+      </mat-error>
+
+      <mat-error *ngIf="patientForm.get('phone')?.hasError('minlength')">
+        Введите телефон полностью!
+      </mat-error>
+
+      <mat-error *ngIf="patientForm.get('phone')?.hasError('invalidPhone')">
+        {{ phoneErrorMessage }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Ваша почта (не обязательно)</mat-label>
+      <input
+        matInput
+        type="email"
+        placeholder="Адрес почты"
+        autocomplete="off"
+        formControlName="email"
+        name="email"
+        [errorStateMatcher]="matcher"
+      />
+      <mat-icon matSuffix class="text-gray-500">mail</mat-icon>
+      <mat-error *ngIf="patientForm.get('email')?.hasError('pattern')">
+        Пожалуйста введите существующий адрес!
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Выберите дату</mat-label>
+      <input
+        matInput
+        [min]="minDate"
+        [matDatepicker]="picker"
+        formControlName="date"
+        name="date"
+        autocomplete="off"
+        [readonly]="readonlyInputDate"
+        (click)="picker.open()"
+        [errorStateMatcher]="matcher"
+        (dateChange)="onChangeDate($event)"
+        [matDatepickerFilter]="sundayAndDisabledDatesFilter"
+      />
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="patientForm.get('date')?.hasError('required')">
+        Пожалуйста выберите дату!
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="timeStatus">
+      <mat-label>Выберите время</mat-label>
+      <mat-select
+        formControlName="time"
+        name="time"
+        panelClass="grid grid-cols-4 grid-rows-4 justify-items-center"
+        [errorStateMatcher]="matcher"
+      >
+        <mat-option [value]="time" *ngFor="let time of arrTimes">{{
+          time
+        }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="patientForm.get('time')?.hasError('required')">
+        Пожалуйста выберите время!
+      </mat-error>
+    </mat-form-field>
+
+    <mat-checkbox formControlName="policy" color="primary">
+      Я согласен(а) с
+      <a
+        class="text-stone-900 underline hover:text-red-800"
+        routerLink="/policy"
+        ><strong>политикой конфиденциальности</strong></a
+      >
+    </mat-checkbox>
+    <mat-error *ngIf="patientForm.get('policy')?.hasError('required')">
+      Вы не согласились!
+    </mat-error>
+
+    <button type="submit" [disabled]="!patientForm.valid" mat-raised-button>
+      <mat-icon class="text-gray-500">person_add</mat-icon>
+      {{ "записаться на прием" | uppercase }}
+    </button>
+    <button
+      color="primary"
+      type="button"
+      mat-raised-button
+      routerLink="/preview"
+    >
+      <mat-icon class="text-stone-50">keyboard_backspace</mat-icon>
+      {{ "назад" | uppercase }}
+    </button>
+  </form>
+</section>
